@@ -1,122 +1,108 @@
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import Link from "next/link";
-import SignOutButton from "../(auth)/components/button-signout";
-import { getServerSession } from "@/lib/auth/get-session";
+"use client";
 
-export default async function Home() {
-  const me = await getServerSession();
+import { useState } from "react";
+import Sidebar from "@/components/Sidebar";
+import DashboardHeader from "@/components/DashboardHeader";
+import ProductGrid from "@/components/ProductGrid";
+import AddProductModal from "@/components/AddProductModal";
+import TrackingDetail from "@/components/TrackingDetail";
+
+const INITIAL_PRODUCTS = [
+  {
+    id: 1,
+    name: "Sony WH-1000XM5",
+    category: "Electronics",
+    msrp: 399.99,
+    currentPrice: 342.50,
+    lowestFound: 318.00,
+    period: 90,
+    daysElapsed: 47,
+    status: "tracking",
+    fraudRisk: "low",
+    image: "🎧",
+  },
+  {
+    id: 2,
+    name: 'Samsung 65" QLED TV',
+    category: "Electronics",
+    msrp: 1299.99,
+    currentPrice: 1089.00,
+    lowestFound: 1089.00,
+    period: 60,
+    daysElapsed: 23,
+    status: "deal_available",
+    fraudRisk: "low",
+    image: "📺",
+  },
+  {
+    id: 3,
+    name: "Nike Air Max 270",
+    category: "Footwear",
+    msrp: 150.00,
+    currentPrice: 138.00,
+    lowestFound: 127.50,
+    period: 30,
+    daysElapsed: 18,
+    status: "tracking",
+    fraudRisk: "medium",
+    image: "👟",
+  },
+  {
+    id: 4,
+    name: "Dyson V15 Vacuum",
+    category: "Home",
+    msrp: 749.99,
+    currentPrice: 699.99,
+    lowestFound: 699.99,
+    period: 90,
+    daysElapsed: 90,
+    status: "completed",
+    fraudRisk: "low",
+    image: "🧹",
+  },
+];
+
+export default function DashboardPage() {
+  const [products, setProducts] = useState(INITIAL_PRODUCTS);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [activeNav, setActiveNav] = useState("dashboard");
+
+  const totalSavings = products.reduce((acc, p) => acc + Math.max(0, p.msrp - p.lowestFound), 0);
+
+  const handleAddProduct = (newProduct) => {
+    setProducts((prev) => [
+      ...prev,
+      { ...newProduct, id: Date.now(), daysElapsed: 0, status: "tracking", fraudRisk: "low" },
+    ]);
+    setShowAddModal(false);
+  };
 
   return (
-    <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
-      <main className="row-start-2 flex flex-col items-center gap-8 sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <div className="flex min-h-screen bg-bg relative z-10">
+      <Sidebar activeNav={activeNav} setActiveNav={setActiveNav} />
+      <div className="flex-1 flex flex-col lg:ml-64 pb-16 lg:pb-0">
+        <DashboardHeader
+          totalSavings={totalSavings}
+          productCount={products.length}
+          onAddProduct={() => setShowAddModal(true)}
         />
-        <ol className="list-inside list-decimal text-center font-[family-name:var(--font-geist-mono)] text-sm sm:text-left">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="rounded bg-black/[.05] px-1 py-0.5 font-semibold dark:bg-white/[.06]">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex flex-col items-center gap-4 sm:flex-row">
-          <a
-            className="flex h-10 items-center justify-center gap-2 rounded-full border border-solid border-transparent bg-foreground px-4 text-sm text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] sm:h-12 sm:px-5 sm:text-base"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+        <main className="flex-1 p-6 lg:p-8">
+          {selectedProduct ? (
+            <TrackingDetail product={selectedProduct} onBack={() => setSelectedProduct(null)} />
+          ) : (
+            <ProductGrid
+              products={products}
+              onSelect={setSelectedProduct}
+              onAddProduct={() => setShowAddModal(true)}
             />
-            Deploy now
-          </a>
-          <a
-            className="flex h-10 items-center justify-center rounded-full border border-solid border-black/[.08] px-4 text-sm transition-colors hover:border-transparent hover:bg-[#f2f2f2] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] sm:h-12 sm:min-w-44 sm:px-5 sm:text-base"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-        {me ? (
-          <div className="flex w-full flex-col gap-5">
-            <h2>Hi, {me.user.name}</h2>
-            <p>{me.user.email}</p>
-            <SignOutButton />
-          </div>
-        ) : (
-          <Link
-            href={"/signin"}
-            className={cn(buttonVariants({ variant: "default" }))}
-          >
-            Sign In
-          </Link>
-        )}
-      </main>
-      <footer className="row-start-3 flex flex-wrap items-center justify-center gap-6">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          )}
+        </main>
+      </div>
+      {showAddModal && (
+        <AddProductModal onClose={() => setShowAddModal(false)} onAdd={handleAddProduct} />
+      )}
     </div>
   );
 }
+
