@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   { id: "settings", label: "Settings", icon: "◈" },
 ];
 
-export default function Sidebar({ activeNav, setActiveNav }) {
+export default function Sidebar({ activeNav, setActiveNav, user, onSignOut }) {
   return (
     <>
       {/* Desktop sidebar */}
@@ -56,14 +56,21 @@ export default function Sidebar({ activeNav, setActiveNav }) {
         <div className="px-6 py-5 border-t border-border">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent/30 to-accent/10 border border-accent/30 flex items-center justify-center">
-              <span className="text-accent text-xs font-mono font-bold">JD</span>
+              <span className="text-accent text-xs font-mono font-bold">
+                {user?.name?.slice(0, 2).toUpperCase() || "??"}
+              </span>
             </div>
-            <div>
-              <p className="text-text text-xs font-display font-semibold">John Doe</p>
-              <p className="text-muted text-[10px] font-mono">Pro Plan</p>
+            <div className="flex-1 min-w-0">
+              <p className="text-text text-xs font-display font-semibold truncate">{user?.name || "User"}</p>
+              <p className="text-muted text-[10px] font-mono truncate">{user?.email || ""}</p>
             </div>
-            <div className="ml-auto w-2 h-2 bg-accent rounded-full animate-pulse2" />
           </div>
+          <button
+            onClick={onSignOut}
+            className="mt-3 w-full py-2 border border-border rounded-sm text-muted font-mono text-[10px] uppercase tracking-widest hover:text-danger hover:border-danger/30 transition-all"
+          >
+            Sign Out
+          </button>
         </div>
       </aside>
 

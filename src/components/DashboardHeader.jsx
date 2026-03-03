@@ -1,6 +1,6 @@
 "use client";
 
-export default function DashboardHeader({ totalSavings, productCount, onAddProduct }) {
+export default function DashboardHeader({ totalSavings, productCount, onAddProduct, user, onSignOut }) {
   const now = new Date();
   const dateStr = now.toLocaleDateString("en-US", {
     weekday: "short", month: "short", day: "numeric", year: "numeric"
@@ -36,6 +36,27 @@ export default function DashboardHeader({ totalSavings, productCount, onAddProdu
           <span className="text-base leading-none">+</span>
           Track Item
         </button>
+
+        {/* User avatar + sign out (mobile) */}
+        <div className="relative group">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent/30 to-accent/10 border border-accent/30 flex items-center justify-center cursor-pointer">
+            <span className="text-accent text-xs font-mono font-bold">
+              {user?.name?.slice(0, 2).toUpperCase() || "??"}
+            </span>
+          </div>
+          <div className="absolute right-0 top-full mt-2 w-36 bg-surface border border-border rounded-sm shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none group-hover:pointer-events-auto z-50">
+            <div className="px-3 py-2.5 border-b border-border">
+              <p className="text-text font-mono text-[10px] font-bold truncate">{user?.name}</p>
+              <p className="text-muted font-mono text-[9px] truncate">{user?.email}</p>
+            </div>
+            <button
+              onClick={onSignOut}
+              className="w-full px-3 py-2.5 text-left text-muted font-mono text-[10px] uppercase tracking-widest hover:text-danger transition-colors"
+            >
+              Sign Out
+            </button>
+          </div>
+        </div>
       </div>
     </header>
   );
