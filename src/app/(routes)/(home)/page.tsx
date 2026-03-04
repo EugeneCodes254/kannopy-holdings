@@ -67,8 +67,9 @@ const INITIAL_PRODUCTS = [
 ];
 
 // ─── Landing / Auth Gate ───────────────────────────────────────────────────────
-function LandingGate({ onSignIn }) {
-  return (
+ function LandingGate({ onSignIn }: { onSignIn: () => void }) {
+   return(
+
     <div className="min-h-screen bg-bg flex flex-col items-center justify-center px-4 relative overflow-hidden">
       {/* Background grid */}
       <div
@@ -131,7 +132,10 @@ export default function Page() {
 
   const totalSavings = products.reduce((acc, p) => acc + Math.max(0, p.msrp - p.lowestFound), 0);
 
-  const handleAddProduct = (newProduct) => {
+  // const handleAddProduct = (newProduct) => {
+
+const handleAddProduct = (newProduct: typeof INITIAL_PRODUCTS[number]) => {
+
     setProducts((prev) => [
       ...prev,
       { ...newProduct, id: Date.now(), daysElapsed: 0, status: "tracking", fraudRisk: "low" },
