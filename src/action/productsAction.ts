@@ -2,16 +2,19 @@
 
 import { db } from "@/db";
 import { products } from "@/db/schema";
-import { getSession } from "@/lib/auth-client";
 import { eq, and } from "drizzle-orm";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
+// import { getSession } from "@/lib/auth/client";
+import { auth } from "@/lib/auth/server";
+// import {  useSession } from "@/lib/auth/client";
 
 // ── helper: get authed user or throw ──────────────────────────────────────────
 async function requireUser() {
-  const session = await getSession({ headers: await headers() });
-  if (!session?.data?.user) throw new Error("Unauthorized");
-  return session.data.user;
+  // const session = await useSession({ headers: await headers() });
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session?.user) throw new Error("Unauthorized");
+  return session.user;
 }
 
 // ── GET all products for current user ─────────────────────────────────────────
