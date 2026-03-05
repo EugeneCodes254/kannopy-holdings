@@ -13,7 +13,7 @@ export const rebates = pgTable("rebates", {
   gross:      real("gross").notNull(),       // msrp - paidPrice
   fee:        real("fee").notNull(),         // gross * 0.15
   net:        real("net").notNull(),         // gross - fee
-  status:     text("status").notNull().default("pending"), // pending | processing | paid
+  status: text("status", { enum: ["pending", "processing", "paid"] }).notNull().default("pending"),
   createdAt:  timestamp("createdAt").defaultNow(),
   updatedAt:  timestamp("updatedAt").defaultNow().$onUpdate(() => new Date()),
 }).enableRLS();

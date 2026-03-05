@@ -1,14 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
-// import { updateProduct, deleteProduct } from "@/actions/products";
-// import { createRebate } from "@/actions/rebatesAction";
 import clsx from "clsx";
+import { useMemo, useState } from "react";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, TooltipProps } from "recharts";
 import { deleteProduct, updateProduct } from "@/action/productsAction";
 import { createRebate } from "@/action/rebatesAction";
+import { PricePoint, TrackingDetailProps } from "@/type/trackingProps";
 
-function generatePriceHistory(msrp, daysElapsed, lowestFound) {
+function generatePriceHistory(msrp:number, daysElapsed:number, lowestFound:number): PricePoint[] {
   const data = [];
   let price = msrp;
   for (let i = 0; i <= daysElapsed; i++) {
@@ -21,19 +20,19 @@ function generatePriceHistory(msrp, daysElapsed, lowestFound) {
   return data;
 }
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload, label }:TooltipProps<number, string>) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-surface border border-border rounded-sm px-3 py-2 shadow-xl">
         <p className="text-muted font-mono text-[9px] tracking-widest uppercase mb-1">Day {label}</p>
-        <p className="text-accent font-display font-bold text-sm">${payload[0].value.toFixed(2)}</p>
+        <p className="text-accent font-display font-bold text-sm">${(payload[0].value ?? 0).toFixed(2)}</p>
       </div>
     );
   }
   return null;
 };
 
-export default function TrackingDetail({ product, onBack, onDelete }) {
+export default function TrackingDetail({ product, onBack, onDelete }:TrackingDetailProps) {
   const [showCashOut, setShowCashOut]         = useState(false);
   const [showStopConfirm, setShowStopConfirm] = useState(false);
   const [loading, setLoading]                 = useState(false);
@@ -71,19 +70,19 @@ export default function TrackingDetail({ product, onBack, onDelete }) {
   };
 
   // Stop tracking → delete product
-  const handleStopTracking = async () => {
+ const handleStopTracking = async () => {
     setLoading(true);
     setError("");
     try {
       await deleteProduct(product.id);
       setShowStopConfirm(false);
+      onDelete(product.id);
     } catch (err) {
       setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
-  };
-
+ }
   return (
     <div className="animate-fadeUp">
       <button

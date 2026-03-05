@@ -1,20 +1,38 @@
 "use client";
 
-
 import clsx from "clsx";
 import { useState, useEffect } from "react";
 import { getRebates } from "@/action/rebatesAction";
 
-const STATUS = {
+type RebateStatus = "paid" | "pending" | "processing";
+
+interface Rebate {
+  id: string;
+  productId: string;
+  status: RebateStatus;
+  gross: number;
+  fee: number;
+  net: number;
+  createdAt: Date | null;
+}
+
+interface StatusConfig {
+  label: string;
+  color: string;
+  bg: string;
+  border: string;
+}
+
+const STATUS: Record<RebateStatus, StatusConfig> = {
   paid:       { label: "PAID",       color: "text-accent", bg: "bg-accent/10", border: "border-accent/20" },
   pending:    { label: "PENDING",    color: "text-warn",   bg: "bg-warn/10",   border: "border-warn/20" },
   processing: { label: "PROCESSING", color: "text-text",   bg: "bg-white/5",   border: "border-border" },
 };
 
 export default function RebatesView() {
-  const [rebates, setRebates] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState("");
+  const [rebates, setRebates] = useState<Rebate[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError]     = useState<string>("");
 
   useEffect(() => {
     getRebates()

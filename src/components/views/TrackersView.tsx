@@ -1,15 +1,29 @@
 "use client";
 
 import clsx from "clsx";
+import { Product } from "@/db/schema";
 
-const STATUS_CONFIG = {
-  tracking:       { label: "TRACKING",   color: "text-accent",  dot: "bg-accent" },
-  deal_available: { label: "DEAL FOUND", color: "text-warn",    dot: "bg-warn" },
-  completed:      { label: "COMPLETED",  color: "text-muted",   dot: "bg-muted" },
+type ProductStatus = "tracking" | "deal_available" | "completed";
+
+interface StatusConfig {
+  label: string;
+  color: string;
+  dot: string;
+}
+
+interface TrackersViewProps {
+  products: Product[];
+  onSelect: (product: Product) => void;
+}
+
+const STATUS_CONFIG: Record<ProductStatus, StatusConfig> = {
+  tracking:       { label: "TRACKING",   color: "text-accent", dot: "bg-accent" },
+  deal_available: { label: "DEAL FOUND", color: "text-warn",   dot: "bg-warn" },
+  completed:      { label: "COMPLETED",  color: "text-muted",  dot: "bg-muted" },
 };
 
-export default function TrackersView({ products, onSelect }) {
-  const groups = {
+export default function TrackersView({ products, onSelect }: TrackersViewProps) {
+  const groups: Record<ProductStatus, Product[]> = {
     deal_available: products.filter(p => p.status === "deal_available"),
     tracking:       products.filter(p => p.status === "tracking"),
     completed:      products.filter(p => p.status === "completed"),
@@ -24,12 +38,11 @@ export default function TrackersView({ products, onSelect }) {
         </p>
       </div>
 
-      {Object.entries(groups).map(([status, items]) => {
+      {(Object.entries(groups) as [ProductStatus, Product[]][]).map(([status, items]) => {
         if (!items.length) return null;
         const cfg = STATUS_CONFIG[status];
         return (
           <div key={status} className="mb-8">
-            {/* Group header */}
             <div className="flex items-center gap-3 mb-3">
               <span className={clsx("w-2 h-2 rounded-full flex-shrink-0", cfg.dot)} />
               <p className={clsx("font-mono text-[10px] tracking-widest uppercase font-bold", cfg.color)}>{cfg.label}</p>
@@ -37,7 +50,6 @@ export default function TrackersView({ products, onSelect }) {
               <div className="flex-1 h-px bg-border" />
             </div>
 
-            {/* Table */}
             <div className="bg-surface border border-border rounded-sm overflow-hidden">
               {items.map((product, i) => {
                 const savings = product.msrp - product.lowestFound;
@@ -52,35 +64,33 @@ export default function TrackersView({ products, onSelect }) {
                       i < items.length - 1 && "border-b border-border"
                     )}
                   >
-                    {/* Icon */}
                     <div className="w-9 h-9 bg-bg border border-border rounded-sm flex items-center justify-center text-lg flex-shrink-0">
                       {product.image}
                     </div>
 
-                    {/* Name + category */}
                     <div className="flex-1 min-w-0">
                       <p className="font-display font-bold text-text text-sm truncate">{product.name}</p>
                       <p className="text-muted font-mono text-[10px] uppercase tracking-widest">{product.category}</p>
                     </div>
 
-                    {/* Progress bar */}
                     <div className="hidden md:block w-24">
                       <p className="text-muted font-mono text-[9px] mb-1">D{product.daysElapsed}/{product.period}</p>
                       <div className="h-1 bg-bg rounded-full overflow-hidden">
                         <div
-                          className={clsx("h-full rounded-full", status === "deal_available" ? "bg-warn" : status === "completed" ? "bg-muted" : "bg-accent")}
+                          className={clsx(
+                            "h-full rounded-full",
+                            status === "deal_available" ? "bg-warn" : status === "completed" ? "bg-muted" : "bg-accent"
+                          )}
                           style={{ width: `${Math.min(progress, 100)}%` }}
                         />
                       </div>
                     </div>
 
-                    {/* MSRP */}
                     <div className="hidden lg:block text-right w-24">
                       <p className="text-muted font-mono text-[9px] uppercase tracking-widest">MSRP</p>
                       <p className="text-text font-mono text-xs font-bold">${product.msrp.toFixed(2)}</p>
                     </div>
 
-                    {/* Savings */}
                     <div className="text-right w-24">
                       <p className="text-muted font-mono text-[9px] uppercase tracking-widest">Best Save</p>
                       <p className={clsx("font-mono text-xs font-bold", savings > 0 ? "text-accent" : "text-muted")}>

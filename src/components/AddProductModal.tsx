@@ -1,6 +1,8 @@
 "use client";
 
+import { AddProductModalProps } from "@/type/productForm";
 import { useState } from "react";
+import { string } from "zod";
 
 const CATEGORIES = [
   "Electronics",
@@ -23,8 +25,16 @@ const EMOJIS = [
   "🎮","🪑","📷","⌚","🖥️","🎒"
 ];
 
-export default function AddProductModal({ onClose, onAdd }) {
-  const [form, setForm] = useState({
+interface FormState {
+  name: string;
+  category: string;
+  msrp: string;
+  period: number;
+  image: string;
+}
+
+export default function AddProductModal({ onClose, onAdd }: AddProductModalProps) {
+  const [form, setForm] = useState<FormState>({
     name: "",
     category: "Electronics",
     msrp: "",
@@ -32,25 +42,25 @@ export default function AddProductModal({ onClose, onAdd }) {
     image: "🎧",
   });
 
-  const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [serverError, setServerError] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState<boolean>(false);
+  const [serverError, setServerError] = useState<string>("");
 
-  const validate = () => {
-    const e = {};
+  const validate = (): Record<string, string> => {
+    const e: Record<string, string> = {};
 
     if (!form.name.trim()) {
       e.name = "Product name required";
     }
 
-    if (!form.msrp || isNaN(form.msrp) || parseFloat(form.msrp) <= 0) {
+    if (!form.msrp || isNaN(Number(form.msrp)) || parseFloat(form.msrp) <= 0) {
       e.msrp = "Valid MSRP required";
     }
 
     return e;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setServerError("");
@@ -66,15 +76,20 @@ export default function AddProductModal({ onClose, onAdd }) {
     try {
       const price = parseFloat(form.msrp);
 
+      // await onAdd({
+      //   name: form.name.trim(),
+      //   category: form.category,
+      //   image: form.image,
+      //   msrp: price,
+      //   period: form.period,
+      // });
       await onAdd({
         name: form.name.trim(),
         category: form.category,
         image: form.image,
         msrp: price,
-        currentPrice: price,
-        lowestFound: price,
         period: form.period,
-      });
+      })
 
       onClose();
     } catch (err) {
@@ -84,9 +99,13 @@ export default function AddProductModal({ onClose, onAdd }) {
     }
   };
 
-  const clearFieldError = (field) => {
+  const clearFieldError = (field: string) => {
     if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }));
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
     }
   };
 

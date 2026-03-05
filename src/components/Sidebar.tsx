@@ -2,6 +2,14 @@
 
 import clsx from "clsx";
 
+
+interface SidebarProps {
+  activeNav: string;
+  setActiveNav: (nav: string) => void;
+  user: { name?: string; email?: string } | null;
+  onSignOut: () => void;
+}
+
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: "⬡" },
   { id: "tracking", label: "My Trackers", icon: "◎" },
@@ -10,7 +18,7 @@ const NAV_ITEMS = [
   { id: "settings", label: "Settings", icon: "◈" },
 ];
 
-export default function Sidebar({ activeNav, setActiveNav, user, onSignOut }) {
+export default function Sidebar({ activeNav, setActiveNav, user, onSignOut }: SidebarProps) {
   return (
     <>
       {/* Desktop sidebar */}

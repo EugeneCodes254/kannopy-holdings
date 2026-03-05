@@ -1,20 +1,10 @@
 "use client";
 
+
 import clsx from "clsx";
+import { ProductCardProps, ProductGridProps, RISK_CONFIG, StatCardProps, STATUS_CONFIG } from "@/type/productGridProps";
 
-const STATUS_CONFIG = {
-  tracking: { label: "TRACKING", color: "text-accent", dot: "bg-accent", border: "border-accent/20" },
-  deal_available: { label: "DEAL FOUND", color: "text-warn", dot: "bg-warn", border: "border-warn/30" },
-  completed: { label: "COMPLETED", color: "text-muted", dot: "bg-muted", border: "border-border" },
-};
-
-const RISK_CONFIG = {
-  low: { label: "VERIFIED", color: "text-accent" },
-  medium: { label: "REVIEW", color: "text-warn" },
-  high: { label: "RISK", color: "text-danger" },
-};
-
-function StatCard({ label, value, unit, delay }) {
+function StatCard({ label, value, unit, delay }: StatCardProps) {
   return (
     <div
       className="bg-surface border border-border rounded-sm px-5 py-4 animate-fadeUp"
@@ -27,7 +17,7 @@ function StatCard({ label, value, unit, delay }) {
   );
 }
 
-function ProductCard({ product, onSelect, delay }) {
+function ProductCard({ product, onSelect, delay }: ProductCardProps) {
   const savings = product.msrp - product.lowestFound;
   const savingsPct = ((savings / product.msrp) * 100).toFixed(1);
   const progress = (product.daysElapsed / product.period) * 100;
@@ -102,7 +92,7 @@ function ProductCard({ product, onSelect, delay }) {
   );
 }
 
-export default function ProductGrid({ products, onSelect, onAddProduct }) {
+export default function ProductGrid({ products, onSelect, onAddProduct }: ProductGridProps) {
   const avgSaving = products.reduce((a, p) => a + ((p.msrp - p.lowestFound) / p.msrp) * 100, 0) / products.length;
 
   const stats = [

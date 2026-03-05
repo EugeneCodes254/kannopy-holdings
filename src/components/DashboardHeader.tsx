@@ -1,6 +1,8 @@
 "use client";
 
-export default function DashboardHeader({ totalSavings, productCount, onAddProduct, user, onSignOut }) {
+import { DashboardHeaderProps } from "@/type/dashbordHeaderProps";
+
+export default function DashboardHeader({ totalSavings, productCount, onAddProduct, user, onSignOut }: DashboardHeaderProps) {
   const now = new Date();
   const dateStr = now.toLocaleDateString("en-US", {
     weekday: "short", month: "short", day: "numeric", year: "numeric"

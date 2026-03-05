@@ -1,9 +1,37 @@
 "use client";
 
-
 import clsx from "clsx";
 import { useState } from "react";
-function Toggle({ enabled, onChange }) {
+
+interface ToggleProps {
+  enabled: boolean;
+  onChange: (value: boolean) => void;
+}
+
+interface SectionProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+interface RowProps {
+  label: string;
+  desc?: string;
+  children?: React.ReactNode;
+  danger?: boolean;
+}
+
+interface NotifState {
+  dealAlerts: boolean;
+  priceDrops: boolean;
+  weeklyReport: boolean;
+  fraudAlerts: boolean;
+}
+
+interface SettingsViewProps {
+  user: { name?: string; email?: string } | null;
+}
+
+function Toggle({ enabled, onChange }: ToggleProps) {
   return (
     <button
       onClick={() => onChange(!enabled)}
@@ -22,7 +50,7 @@ function Toggle({ enabled, onChange }) {
   );
 }
 
-function Section({ title, children }) {
+function Section({ title, children }: SectionProps) {
   return (
     <div className="mb-8">
       <div className="flex items-center gap-4 mb-4">
@@ -34,7 +62,7 @@ function Section({ title, children }) {
   );
 }
 
-function Row({ label, desc, children, danger }) {
+function Row({ label, desc, children, danger }: RowProps) {
   return (
     <div className="flex items-center justify-between gap-4 px-5 py-4 border-b border-border last:border-0">
       <div>
@@ -46,9 +74,21 @@ function Row({ label, desc, children, danger }) {
   );
 }
 
-export default function SettingsView({ user }) {
-  const [notifs, setNotifs] = useState({ dealAlerts: true, priceDrops: true, weeklyReport: false, fraudAlerts: true });
-  const [period, setPeriod] = useState("60");
+export default function SettingsView({ user }: SettingsViewProps) {
+  const [notifs, setNotifs] = useState<NotifState>({
+    dealAlerts: true,
+    priceDrops: true,
+    weeklyReport: false,
+    fraudAlerts: true,
+  });
+  const [period, setPeriod] = useState<string>("60");
+
+  const notifItems: { key: keyof NotifState; label: string; desc: string }[] = [
+    { key: "dealAlerts",   label: "Deal Alerts",   desc: "Notify when a deal is found for tracked items" },
+    { key: "priceDrops",   label: "Price Drops",   desc: "Notify on any price drop, even before period ends" },
+    { key: "weeklyReport", label: "Weekly Report", desc: "Summary email of your tracking activity" },
+    { key: "fraudAlerts",  label: "Fraud Alerts",  desc: "Alert when AI detects suspicious pricing" },
+  ];
 
   return (
     <div className="animate-fadeUp max-w-2xl">
@@ -57,7 +97,6 @@ export default function SettingsView({ user }) {
         <p className="text-muted font-mono text-[10px] tracking-widest uppercase mt-1">Manage your account and preferences</p>
       </div>
 
-      {/* Account */}
       <Section title="Account">
         <Row label="Email" desc="Your login email">
           <span className="text-muted font-mono text-xs">{user?.email || "—"}</span>
@@ -70,7 +109,6 @@ export default function SettingsView({ user }) {
         </Row>
       </Section>
 
-      {/* Tracking defaults */}
       <Section title="Tracking Defaults">
         <Row label="Default Period" desc="Tracking window applied to new items">
           <div className="flex gap-2">
@@ -90,21 +128,17 @@ export default function SettingsView({ user }) {
         </Row>
       </Section>
 
-      {/* Notifications */}
       <Section title="Notifications">
-        {[
-          { key: "dealAlerts",    label: "Deal Alerts",    desc: "Notify when a deal is found for tracked items" },
-          { key: "priceDrops",    label: "Price Drops",    desc: "Notify on any price drop, even before period ends" },
-          { key: "weeklyReport",  label: "Weekly Report",  desc: "Summary email of your tracking activity" },
-          { key: "fraudAlerts",   label: "Fraud Alerts",   desc: "Alert when AI detects suspicious pricing" },
-        ].map(({ key, label, desc }) => (
+        {notifItems.map(({ key, label, desc }) => (
           <Row key={key} label={label} desc={desc}>
-            <Toggle enabled={notifs[key]} onChange={v => setNotifs(n => ({ ...n, [key]: v }))} />
+            <Toggle
+              enabled={notifs[key]}
+              onChange={v => setNotifs(n => ({ ...n, [key]: v }))}
+            />
           </Row>
         ))}
       </Section>
 
-      {/* Danger zone */}
       <Section title="Danger Zone">
         <Row label="Delete Account" desc="Permanently delete your account and all data" danger>
           <button className="px-3 py-1.5 border border-danger/30 text-danger font-mono text-[10px] tracking-widest uppercase rounded-sm hover:bg-danger/10 transition-all">

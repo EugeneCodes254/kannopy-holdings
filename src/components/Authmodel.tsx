@@ -1,22 +1,38 @@
 "use client";
 
 import { signIn, signUp } from "@/lib/auth/client";
+import { AddauthModalProps } from "@/type/productForm";
 import { useState } from "react";
-// import { signIn, signUp } from "@/lib/auth/auth-client";
 
-export default function AuthModal({ onClose }) {
-  const [mode, setMode] = useState("signin"); // "signin" | "signup"
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+interface FormState {
+  email: string;
+  password: string;
+  username: string;
+  gender: string;
+}
 
-  const [form, setForm] = useState({
+interface FieldProps {
+  label: string;
+  type?: string;
+  placeholder: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  hint?: string;
+}
+
+export default function AuthModal({ onClose }: AddauthModalProps) {
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+
+  const [form, setForm] = useState<FormState>({
     email: "",
     password: "",
     username: "",
     gender: "",
   });
 
-  const set = (field) => (e) =>
+  const set = (field: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [field]: e.target.value }));
 
   const handleSignIn = async () => {
@@ -52,13 +68,19 @@ export default function AuthModal({ onClose }) {
     }
     setLoading(true);
     try {
-      const res = await signUp.email({
-        email: form.email,
-        password: form.password,
-        name: form.username,
-        username: form.username,
-        gender: form.gender === "true",
-      });
+
+
+const res = await signUp.email({
+  email: form.email,
+  password: form.password,
+  name: form.username,
+  username: form.username,
+  fetchOptions: {
+    body: {
+      gender: form.gender,
+    }
+  }
+});
       if (res?.error) setError(res.error.message || "Sign up failed.");
       else onClose?.();
     } catch (e) {
@@ -95,7 +117,7 @@ export default function AuthModal({ onClose }) {
 
         {/* Tab switcher */}
         <div className="flex border-b border-border">
-          {["signin", "signup"].map((m) => (
+          {(["signin", "signup"] as const).map((m) => (
             <button
               key={m}
               onClick={() => { setMode(m); setError(""); }}
@@ -202,7 +224,7 @@ export default function AuthModal({ onClose }) {
   );
 }
 
-function Field({ label, type = "text", placeholder, value, onChange, hint }) {
+function Field({ label, type = "text", placeholder, value, onChange, hint }: FieldProps) {
   return (
     <div>
       <label className="text-muted font-mono text-[10px] uppercase tracking-widest block mb-1.5">
