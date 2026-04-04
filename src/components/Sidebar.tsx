@@ -30,8 +30,8 @@ export default function Sidebar({ activeNav, setActiveNav, user, onSignOut }: Si
               <span className="text-bg font-display font-black text-sm">P</span>
             </div>
             <div>
-              <p className="font-display font-bold text-text text-sm tracking-widest uppercase">PriceWatch</p>
-              <p className="text-muted text-[10px] font-mono tracking-wider">Tracking Intelligence</p>
+              <p className="font-display font-bold text-text text-base tracking-widest uppercase">PriceWatch</p>
+              <p className="text-muted text-sm font-mono tracking-wider">Tracking Intelligence</p>
             </div>
           </div>
         </div>
@@ -50,7 +50,7 @@ export default function Sidebar({ activeNav, setActiveNav, user, onSignOut }: Si
               )}
             >
               <span className="text-base w-5 text-center">{item.icon}</span>
-              <span className="font-display font-semibold text-xs tracking-widest uppercase">
+              <span className="font-display font-semibold text-sm tracking-widest uppercase">
                 {item.label}
               </span>
               {activeNav === item.id && (
@@ -64,18 +64,18 @@ export default function Sidebar({ activeNav, setActiveNav, user, onSignOut }: Si
         <div className="px-6 py-5 border-t border-border">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent/30 to-accent/10 border border-accent/30 flex items-center justify-center">
-              <span className="text-accent text-xs font-mono font-bold">
+              <span className="text-accent text-sm font-mono font-bold">
                 {user?.name?.slice(0, 2).toUpperCase() || "??"}
               </span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-text text-xs font-display font-semibold truncate">{user?.name || "User"}</p>
-              <p className="text-muted text-[10px] font-mono truncate">{user?.email || ""}</p>
+              <p className="text-text text-sm font-display font-semibold truncate">{user?.name || "User"}</p>
+              <p className="text-muted text-sm font-mono truncate">{user?.email || ""}</p>
             </div>
           </div>
           <button
             onClick={onSignOut}
-            className="mt-3 w-full py-2 border border-border rounded-sm text-muted font-mono text-[10px] uppercase tracking-widest hover:text-danger hover:border-danger/30 transition-all"
+            className="mt-3 w-full py-2 border border-border rounded-sm text-muted font-mono text-sm uppercase tracking-widest hover:text-danger hover:border-danger/30 transition-all"
           >
             Sign Out
           </button>
@@ -94,7 +94,7 @@ export default function Sidebar({ activeNav, setActiveNav, user, onSignOut }: Si
             )}
           >
             <span className="text-lg">{item.icon}</span>
-            <span className="text-[9px] font-display tracking-widest uppercase">{item.label}</span>
+            <span className="text-xs font-display tracking-widest uppercase">{item.label}</span>
           </button>
         ))}
       </nav>

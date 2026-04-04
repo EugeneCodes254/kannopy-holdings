@@ -76,20 +76,13 @@ export default function AddProductModal({ onClose, onAdd }: AddProductModalProps
     try {
       const price = parseFloat(form.msrp);
 
-      // await onAdd({
-      //   name: form.name.trim(),
-      //   category: form.category,
-      //   image: form.image,
-      //   msrp: price,
-      //   period: form.period,
-      // });
       await onAdd({
         name: form.name.trim(),
         category: form.category,
         image: form.image,
         msrp: price,
         period: form.period,
-      })
+      });
 
       onClose();
     } catch (err) {
@@ -127,7 +120,8 @@ export default function AddProductModal({ onClose, onAdd }: AddProductModalProps
             <h2 className="font-display font-bold text-text text-base">
               Track New Item
             </h2>
-            <p className="text-muted font-mono text-[10px] mt-0.5 tracking-widest">
+            {/* was text-[10px] → text-sm */}
+            <p className="text-muted font-mono text-sm mt-0.5 tracking-widest">
               SET MSRP · CHOOSE PERIOD
             </p>
           </div>
@@ -148,7 +142,8 @@ export default function AddProductModal({ onClose, onAdd }: AddProductModalProps
 
             {/* Emoji Picker */}
             <div>
-              <p className="text-muted font-mono text-[10px] uppercase tracking-widest mb-2">
+              {/* was text-[10px] → text-sm */}
+              <p className="text-muted font-mono text-sm uppercase tracking-widest mb-2">
                 Item Icon
               </p>
 
@@ -174,7 +169,8 @@ export default function AddProductModal({ onClose, onAdd }: AddProductModalProps
 
             {/* Product Name */}
             <div>
-              <label className="text-muted font-mono text-[10px] uppercase tracking-widest block mb-1.5">
+              {/* was text-[10px] → text-sm */}
+              <label className="text-muted font-mono text-sm uppercase tracking-widest block mb-1.5">
                 Product Name *
               </label>
 
@@ -189,8 +185,9 @@ export default function AddProductModal({ onClose, onAdd }: AddProductModalProps
                 className="w-full bg-bg border border-border rounded-sm px-3 py-2.5 text-text font-mono text-sm placeholder-muted focus:outline-none focus:border-accent/60 transition-colors"
               />
 
+              {/* was text-[10px] → text-sm */}
               {errors.name && (
-                <p className="text-danger font-mono text-[10px] mt-1">
+                <p className="text-danger font-mono text-sm mt-1">
                   {errors.name}
                 </p>
               )}
@@ -198,7 +195,8 @@ export default function AddProductModal({ onClose, onAdd }: AddProductModalProps
 
             {/* Category */}
             <div>
-              <label className="text-muted font-mono text-[10px] uppercase tracking-widest block mb-1.5">
+              {/* was text-[10px] → text-sm */}
+              <label className="text-muted font-mono text-sm uppercase tracking-widest block mb-1.5">
                 Category
               </label>
 
@@ -219,7 +217,8 @@ export default function AddProductModal({ onClose, onAdd }: AddProductModalProps
 
             {/* MSRP */}
             <div>
-              <label className="text-muted font-mono text-[10px] uppercase tracking-widest block mb-1.5">
+              {/* was text-[10px] → text-sm */}
+              <label className="text-muted font-mono text-sm uppercase tracking-widest block mb-1.5">
                 Your MSRP / Max Budget *
               </label>
 
@@ -240,8 +239,9 @@ export default function AddProductModal({ onClose, onAdd }: AddProductModalProps
                 />
               </div>
 
+              {/* was text-[10px] → text-sm */}
               {errors.msrp && (
-                <p className="text-danger font-mono text-[10px] mt-1">
+                <p className="text-danger font-mono text-sm mt-1">
                   {errors.msrp}
                 </p>
               )}
@@ -249,7 +249,8 @@ export default function AddProductModal({ onClose, onAdd }: AddProductModalProps
 
             {/* Period */}
             <div>
-              <label className="text-muted font-mono text-[10px] uppercase tracking-widest block mb-2">
+              {/* was text-[10px] → text-sm */}
+              <label className="text-muted font-mono text-sm uppercase tracking-widest block mb-2">
                 Tracking Period
               </label>
 
@@ -267,8 +268,9 @@ export default function AddProductModal({ onClose, onAdd }: AddProductModalProps
                         : "border-border bg-bg hover:border-accent/30"
                     }`}
                   >
+                    {/* was text-sm → text-base */}
                     <p
-                      className={`font-display font-bold text-sm ${
+                      className={`font-display font-bold text-base ${
                         form.period === p.value
                           ? "text-accent"
                           : "text-text"
@@ -276,7 +278,8 @@ export default function AddProductModal({ onClose, onAdd }: AddProductModalProps
                     >
                       {p.label}
                     </p>
-                    <p className="text-muted font-mono text-[9px] mt-0.5 tracking-widest">
+                    {/* was text-[9px] → text-sm */}
+                    <p className="text-muted font-mono text-sm mt-0.5 tracking-widest">
                       {p.desc}
                     </p>
                   </button>
@@ -287,8 +290,10 @@ export default function AddProductModal({ onClose, onAdd }: AddProductModalProps
             {/* Server Error */}
             {serverError && (
               <div className="flex items-start gap-2 px-3 py-2.5 bg-danger/10 border border-danger/30 rounded-sm">
-                <span className="text-danger text-xs mt-0.5">✕</span>
-                <p className="text-danger font-mono text-[10px]">
+                {/* was text-xs → text-sm */}
+                <span className="text-danger text-sm mt-0.5">✕</span>
+                {/* was text-[10px] → text-sm */}
+                <p className="text-danger font-mono text-sm">
                   {serverError}
                 </p>
               </div>
@@ -298,19 +303,21 @@ export default function AddProductModal({ onClose, onAdd }: AddProductModalProps
 
           {/* Footer */}
           <div className="px-6 py-4 border-t border-border flex items-center gap-3">
+            {/* was text-xs → text-sm */}
             <button
               type="button"
               onClick={onClose}
               disabled={loading}
-              className="flex-1 py-2.5 border border-border rounded-sm text-muted font-display font-semibold text-xs tracking-widest uppercase hover:text-text hover:border-accent/30 transition-all disabled:opacity-40"
+              className="flex-1 py-2.5 border border-border rounded-sm text-muted font-display font-semibold text-sm tracking-widest uppercase hover:text-text hover:border-accent/30 transition-all disabled:opacity-40"
             >
               Cancel
             </button>
 
+            {/* was text-xs → text-sm */}
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 py-2.5 bg-accent text-bg rounded-sm font-display font-bold text-xs tracking-widest uppercase hover:bg-accent/90 active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="flex-1 py-2.5 bg-accent text-bg rounded-sm font-display font-bold text-sm tracking-widest uppercase hover:bg-accent/90 active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>

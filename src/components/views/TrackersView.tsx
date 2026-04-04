@@ -33,7 +33,8 @@ export default function TrackersView({ products, onSelect }: TrackersViewProps) 
     <div className="animate-fadeUp">
       <div className="mb-6">
         <h2 className="font-display font-extrabold text-text text-2xl">My Trackers</h2>
-        <p className="text-muted font-mono text-[10px] tracking-widest uppercase mt-1">
+        {/* was text-[10px] → text-sm */}
+        <p className="text-muted font-mono text-sm tracking-widest uppercase mt-1">
           {products.length} items · All your active and completed tracking sessions
         </p>
       </div>
@@ -45,8 +46,10 @@ export default function TrackersView({ products, onSelect }: TrackersViewProps) 
           <div key={status} className="mb-8">
             <div className="flex items-center gap-3 mb-3">
               <span className={clsx("w-2 h-2 rounded-full flex-shrink-0", cfg.dot)} />
-              <p className={clsx("font-mono text-[10px] tracking-widest uppercase font-bold", cfg.color)}>{cfg.label}</p>
-              <span className="text-muted font-mono text-[10px]">({items.length})</span>
+              {/* was text-[10px] → text-sm */}
+              <p className={clsx("font-mono text-sm tracking-widest uppercase font-bold", cfg.color)}>{cfg.label}</p>
+              {/* was text-[10px] → text-sm */}
+              <span className="text-muted font-mono text-sm">({items.length})</span>
               <div className="flex-1 h-px bg-border" />
             </div>
 
@@ -69,12 +72,15 @@ export default function TrackersView({ products, onSelect }: TrackersViewProps) 
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <p className="font-display font-bold text-text text-sm truncate">{product.name}</p>
-                      <p className="text-muted font-mono text-[10px] uppercase tracking-widest">{product.category}</p>
+                      {/* was text-sm → text-base */}
+                      <p className="font-display font-bold text-text text-base truncate">{product.name}</p>
+                      {/* was text-[10px] → text-sm */}
+                      <p className="text-muted font-mono text-sm uppercase tracking-widest">{product.category}</p>
                     </div>
 
                     <div className="hidden md:block w-24">
-                      <p className="text-muted font-mono text-[9px] mb-1">D{product.daysElapsed}/{product.period}</p>
+                      {/* was text-[9px] → text-sm */}
+                      <p className="text-muted font-mono text-sm mb-1">D{product.daysElapsed}/{product.period}</p>
                       <div className="h-1 bg-bg rounded-full overflow-hidden">
                         <div
                           className={clsx(
@@ -87,19 +93,25 @@ export default function TrackersView({ products, onSelect }: TrackersViewProps) 
                     </div>
 
                     <div className="hidden lg:block text-right w-24">
-                      <p className="text-muted font-mono text-[9px] uppercase tracking-widest">MSRP</p>
-                      <p className="text-text font-mono text-xs font-bold">${product.msrp.toFixed(2)}</p>
+                      {/* was text-[9px] → text-sm */}
+                      <p className="text-muted font-mono text-sm uppercase tracking-widest">MSRP</p>
+                      {/* was text-xs → text-base */}
+                      <p className="text-text font-mono text-base font-bold">${product.msrp.toFixed(2)}</p>
                     </div>
 
                     <div className="text-right w-24">
-                      <p className="text-muted font-mono text-[9px] uppercase tracking-widest">Best Save</p>
-                      <p className={clsx("font-mono text-xs font-bold", savings > 0 ? "text-accent" : "text-muted")}>
+                      {/* was text-[9px] → text-sm */}
+                      <p className="text-muted font-mono text-sm uppercase tracking-widest">Best Save</p>
+                      {/* was text-xs → text-base */}
+                      <p className={clsx("font-mono text-base font-bold", savings > 0 ? "text-accent" : "text-muted")}>
                         {savings > 0 ? `-$${savings.toFixed(2)}` : "—"}
                       </p>
-                      {savings > 0 && <p className="text-accent font-mono text-[9px]">{savingsPct}% off</p>}
+                      {/* was text-[9px] → text-sm */}
+                      {savings > 0 && <p className="text-accent font-mono text-sm">{savingsPct}% off</p>}
                     </div>
 
-                    <span className="text-muted text-xs group-hover:text-accent transition-colors ml-2">→</span>
+                    {/* was text-xs → text-sm */}
+                    <span className="text-muted text-sm group-hover:text-accent transition-colors ml-2">→</span>
                   </button>
                 );
               })}

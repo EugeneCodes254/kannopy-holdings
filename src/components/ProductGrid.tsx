@@ -10,9 +10,11 @@ function StatCard({ label, value, unit, delay }: StatCardProps) {
       className="bg-surface border border-border rounded-sm px-5 py-4 animate-fadeUp"
       style={{ animationDelay: `${delay}ms`, animationFillMode: "both" }}
     >
-      <p className="text-muted font-mono text-[10px] uppercase tracking-widest mb-1">{label}</p>
+      {/* was text-[10px] → text-sm */}
+      <p className="text-muted font-mono text-sm uppercase tracking-widest mb-1">{label}</p>
       <p className="font-display font-extrabold text-2xl text-text">{value}</p>
-      <p className="text-muted font-mono text-[10px] mt-0.5">{unit}</p>
+      {/* was text-[10px] → text-sm */}
+      <p className="text-muted font-mono text-sm mt-0.5">{unit}</p>
     </div>
   );
 }
@@ -40,12 +42,15 @@ function ProductCard({ product, onSelect, delay }: ProductCardProps) {
             {product.image}
           </div>
           <div>
-            <p className="font-display font-bold text-text text-sm leading-tight">{product.name}</p>
-            <p className="text-muted font-mono text-[10px] uppercase tracking-widest mt-0.5">{product.category}</p>
+            {/* was text-sm → text-base */}
+            <p className="font-display font-bold text-text text-base leading-tight">{product.name}</p>
+            {/* was text-[10px] → text-sm */}
+            <p className="text-muted font-mono text-sm uppercase tracking-widest mt-0.5">{product.category}</p>
           </div>
         </div>
+        {/* was text-[10px] → text-sm */}
         <div
-          className={clsx("flex items-center gap-1.5 px-2 py-1 rounded-sm border text-[10px] font-mono tracking-widest", statusCfg.color, statusCfg.border)}
+          className={clsx("flex items-center gap-1.5 px-2 py-1 rounded-sm border text-sm font-mono tracking-widest", statusCfg.color, statusCfg.border)}
           style={{ background: "rgba(0,0,0,0.3)" }}
         >
           <span className={clsx("w-1.5 h-1.5 rounded-full flex-shrink-0", statusCfg.dot, product.status !== "completed" && "animate-pulse2")} />
@@ -55,23 +60,28 @@ function ProductCard({ product, onSelect, delay }: ProductCardProps) {
 
       <div className="flex items-end justify-between mb-4">
         <div>
-          <p className="text-muted font-mono text-[10px] uppercase tracking-widest mb-1">Current Price</p>
+          {/* was text-[10px] → text-sm */}
+          <p className="text-muted font-mono text-sm uppercase tracking-widest mb-1">Current Price</p>
           <p className="font-display font-extrabold text-2xl text-text">${product.currentPrice.toFixed(2)}</p>
-          <p className="text-muted font-mono text-[10px] mt-0.5 line-through">MSRP ${product.msrp.toFixed(2)}</p>
+          {/* was text-[10px] → text-sm */}
+          <p className="text-muted font-mono text-sm mt-0.5 line-through">MSRP ${product.msrp.toFixed(2)}</p>
         </div>
         <div className="text-right">
-          <p className="text-muted font-mono text-[10px] uppercase tracking-widest mb-1">Best Found</p>
+          {/* was text-[10px] → text-sm */}
+          <p className="text-muted font-mono text-sm uppercase tracking-widest mb-1">Best Found</p>
           <p className={clsx("font-display font-bold text-lg", savings > 0 ? "text-accent" : "text-muted")}>
             ${product.lowestFound.toFixed(2)}
           </p>
-          <p className={clsx("font-mono text-[10px]", savings > 0 ? "text-accent" : "text-muted")}>-{savingsPct}% off</p>
+          {/* was text-[10px] → text-sm */}
+          <p className={clsx("font-mono text-sm", savings > 0 ? "text-accent" : "text-muted")}>-{savingsPct}% off</p>
         </div>
       </div>
 
       <div className="mb-3">
         <div className="flex justify-between items-center mb-1.5">
-          <p className="text-muted font-mono text-[10px] tracking-widest">Day {product.daysElapsed} / {product.period}</p>
-          <p className="text-muted font-mono text-[10px]">{Math.round(progress)}%</p>
+          {/* was text-[10px] → text-sm */}
+          <p className="text-muted font-mono text-sm tracking-widest">Day {product.daysElapsed} / {product.period}</p>
+          <p className="text-muted font-mono text-sm">{Math.round(progress)}%</p>
         </div>
         <div className="h-1 bg-bg rounded-full overflow-hidden">
           <div
@@ -83,10 +93,12 @@ function ProductCard({ product, onSelect, delay }: ProductCardProps) {
 
       <div className="flex items-center justify-between pt-3 border-t border-border">
         <div className="flex items-center gap-1.5">
-          <span className="text-muted font-mono text-[10px]">AI Check:</span>
-          <span className={clsx("font-mono text-[10px] font-bold tracking-widest", riskCfg.color)}>{riskCfg.label}</span>
+          {/* was text-[10px] → text-sm */}
+          <span className="text-muted font-mono text-sm">AI Check:</span>
+          <span className={clsx("font-mono text-sm font-bold tracking-widest", riskCfg.color)}>{riskCfg.label}</span>
         </div>
-        <span className="text-muted font-mono text-[10px] group-hover:text-accent transition-colors">View Details →</span>
+        {/* was text-[10px] → text-sm */}
+        <span className="text-muted font-mono text-sm group-hover:text-accent transition-colors">View Details →</span>
       </div>
     </button>
   );
@@ -109,7 +121,8 @@ export default function ProductGrid({ products, onSelect, onAddProduct }: Produc
       </div>
 
       <div className="flex items-center gap-4 mb-4">
-        <p className="font-mono text-[10px] text-muted tracking-widest uppercase">Active Trackers</p>
+        {/* was text-[10px] → text-sm */}
+        <p className="font-mono text-sm text-muted tracking-widest uppercase">Active Trackers</p>
         <div className="flex-1 h-px bg-border" />
       </div>
 
@@ -125,8 +138,10 @@ export default function ProductGrid({ products, onSelect, onAddProduct }: Produc
             +
           </div>
           <div className="text-center">
-            <p className="font-display font-bold text-muted text-sm group-hover:text-text transition-colors">Track New Item</p>
-            <p className="text-muted font-mono text-[10px] mt-1 tracking-widest">Set MSRP + period</p>
+            {/* was text-sm → text-base */}
+            <p className="font-display font-bold text-muted text-base group-hover:text-text transition-colors">Track New Item</p>
+            {/* was text-[10px] → text-sm */}
+            <p className="text-muted font-mono text-sm mt-1 tracking-widest">Set MSRP + period</p>
           </div>
         </button>
       </div>

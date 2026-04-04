@@ -1,7 +1,5 @@
 @import "tailwindcss";
-
 @plugin "tailwindcss-animate";
-
 @custom-variant dark (&:is(.dark *));
 
 @theme {
@@ -10,15 +8,15 @@
   --font-mono: "Space Mono", monospace;
   --font-display: "Syne", sans-serif;
 
-  /* ── App colors (used by all components) ── */
-  --color-bg: #080A0F;
-  --color-surface: #0D1017;
-  --color-border: #1A2030;
-  --color-accent: #00FF87;
-  --color-warn: #FFB800;
-  --color-danger: #FF3B5C;
-  --color-muted: #3A4A5C;
-  --color-text: #C8D8E8;
+  /* ── App colors (Deep Navy Theme) ── */
+  --color-bg:      #0A0F1E;   /* deep navy base */
+  --color-surface: #0F1729;   /* slightly lighter navy surface */
+  --color-border:  #1A2540;   /* navy border */
+  --color-accent:  #4D9FFF;   /* electric blue accent */
+  --color-warn:    #FFB800;   /* amber warning */
+  --color-danger:  #FF3B5C;   /* red danger */
+  --color-muted:   #4A6080;   /* muted blue-grey */
+  --color-text:    #C8DCF5;   /* soft blue-white text */
 
   /* ── Shadcn / Radix design tokens ── */
   --color-background: oklch(1 0 0);
@@ -87,19 +85,20 @@
     @apply border-border outline-ring/50;
   }
 
-  body {
-    background-color: #080A0F;
-    color: #C8D8E8;
-    font-family: var(--font-mono);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 18px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
   /* Custom scrollbar */
   ::-webkit-scrollbar        { width: 4px; }
-  ::-webkit-scrollbar-track  { background: #080A0F; }
-  ::-webkit-scrollbar-thumb  { background: #1A2030; border-radius: 2px; }
-  ::-webkit-scrollbar-thumb:hover { background: #00FF87; }
+  ::-webkit-scrollbar-track  { background: #0A0F1E; }
+  ::-webkit-scrollbar-thumb  { background: #1A2540; border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: #4D9FFF; }
 
   /* Noise texture overlay */
   body::before {
@@ -115,8 +114,9 @@
   /* Recharts overrides */
   .recharts-cartesian-grid-horizontal line,
   .recharts-cartesian-grid-vertical line {
-    stroke: #1A2030 !important;
+    stroke: #1A2540 !important;
   }
+
   .recharts-tooltip-wrapper {
     outline: none !important;
   }

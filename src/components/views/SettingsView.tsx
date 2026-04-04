@@ -54,7 +54,8 @@ function Section({ title, children }: SectionProps) {
   return (
     <div className="mb-8">
       <div className="flex items-center gap-4 mb-4">
-        <p className="font-mono text-[10px] text-muted tracking-widest uppercase">{title}</p>
+        {/* was text-[10px] → text-sm */}
+        <p className="font-mono text-sm text-muted tracking-widest uppercase">{title}</p>
         <div className="flex-1 h-px bg-border" />
       </div>
       <div className="bg-surface border border-border rounded-sm overflow-hidden">{children}</div>
@@ -66,8 +67,10 @@ function Row({ label, desc, children, danger }: RowProps) {
   return (
     <div className="flex items-center justify-between gap-4 px-5 py-4 border-b border-border last:border-0">
       <div>
-        <p className={clsx("font-display font-semibold text-sm", danger ? "text-danger" : "text-text")}>{label}</p>
-        {desc && <p className="text-muted font-mono text-[10px] mt-0.5 leading-relaxed">{desc}</p>}
+        {/* was text-sm → text-base */}
+        <p className={clsx("font-display font-semibold text-base", danger ? "text-danger" : "text-text")}>{label}</p>
+        {/* was text-[10px] → text-sm */}
+        {desc && <p className="text-muted font-mono text-sm mt-0.5 leading-relaxed">{desc}</p>}
       </div>
       {children}
     </div>
@@ -94,18 +97,22 @@ export default function SettingsView({ user }: SettingsViewProps) {
     <div className="animate-fadeUp max-w-2xl">
       <div className="mb-6">
         <h2 className="font-display font-extrabold text-text text-2xl">Settings</h2>
-        <p className="text-muted font-mono text-[10px] tracking-widest uppercase mt-1">Manage your account and preferences</p>
+        {/* was text-[10px] → text-sm */}
+        <p className="text-muted font-mono text-sm tracking-widest uppercase mt-1">Manage your account and preferences</p>
       </div>
 
       <Section title="Account">
         <Row label="Email" desc="Your login email">
-          <span className="text-muted font-mono text-xs">{user?.email || "—"}</span>
+          {/* was text-xs → text-sm */}
+          <span className="text-muted font-mono text-sm">{user?.email || "—"}</span>
         </Row>
         <Row label="Username" desc="Your public username">
-          <span className="text-muted font-mono text-xs">{user?.name || "—"}</span>
+          {/* was text-xs → text-sm */}
+          <span className="text-muted font-mono text-sm">{user?.name || "—"}</span>
         </Row>
         <Row label="Plan" desc="Current subscription tier">
-          <span className="px-2 py-1 bg-accent/10 border border-accent/20 text-accent font-mono text-[10px] tracking-widest rounded-sm">PRO</span>
+          {/* was text-[10px] → text-sm */}
+          <span className="px-2 py-1 bg-accent/10 border border-accent/20 text-accent font-mono text-sm tracking-widest rounded-sm">PRO</span>
         </Row>
       </Section>
 
@@ -117,7 +124,7 @@ export default function SettingsView({ user }: SettingsViewProps) {
                 key={d}
                 onClick={() => setPeriod(d)}
                 className={clsx(
-                  "px-3 py-1.5 rounded-sm border font-mono text-[10px] tracking-widest transition-all",
+                  "px-3 py-1.5 rounded-sm border font-mono text-sm tracking-widest transition-all",
                   period === d ? "border-accent bg-accent/10 text-accent" : "border-border text-muted hover:border-accent/30"
                 )}
               >
@@ -141,7 +148,8 @@ export default function SettingsView({ user }: SettingsViewProps) {
 
       <Section title="Danger Zone">
         <Row label="Delete Account" desc="Permanently delete your account and all data" danger>
-          <button className="px-3 py-1.5 border border-danger/30 text-danger font-mono text-[10px] tracking-widest uppercase rounded-sm hover:bg-danger/10 transition-all">
+          {/* was text-[10px] → text-sm */}
+          <button className="px-3 py-1.5 border border-danger/30 text-danger font-mono text-sm tracking-widest uppercase rounded-sm hover:bg-danger/10 transition-all">
             Delete
           </button>
         </Row>

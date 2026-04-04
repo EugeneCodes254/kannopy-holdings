@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -27,7 +26,6 @@ export default function Page() {
   const [showAuthModal, setShowAuthModal]     = useState(false);
   const [products, setProducts]= useState<Product[]> ([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
-  // const [selectedProduct, setSelectedProduct] = useState<Product>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | undefined>(undefined);
 
   const [showAddModal, setShowAddModal]       = useState(false);
@@ -86,7 +84,8 @@ export default function Page() {
       <div className="min-h-screen bg-bg flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-8 h-8 border-2 border-border border-t-accent rounded-full animate-spin" />
-          <p className="text-muted font-mono text-[10px] tracking-widest uppercase">Loading...</p>
+          {/* was text-[10px] → text-sm */}
+          <p className="text-muted font-mono text-sm tracking-widest uppercase">Loading...</p>
         </div>
       </div>
     );
@@ -96,7 +95,6 @@ export default function Page() {
     return (
       <>
         <LandingGate onSignIn={() => setShowAuthModal(true)} />
-      
         {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
       </>
     );
@@ -125,7 +123,8 @@ export default function Page() {
             <div className="flex items-center justify-center h-64">
               <div className="flex flex-col items-center gap-4">
                 <div className="w-6 h-6 border-2 border-border border-t-accent rounded-full animate-spin" />
-                <p className="text-muted font-mono text-[10px] tracking-widest uppercase">Fetching your trackers...</p>
+                {/* was text-[10px] → text-sm */}
+                <p className="text-muted font-mono text-sm tracking-widest uppercase">Fetching your trackers...</p>
               </div>
             </div>
           )}
