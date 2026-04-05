@@ -3,12 +3,42 @@
 import clsx from "clsx";
 
 const DEALS = [
-  { id: 1, name: "Sony WH-1000XM5", category: "Electronics", image: "🎧", msrp: 399.99, dealPrice: 289.99, source: "Amazon", fraudRisk: "low", drop: 27.5 },
-  { id: 2, name: "iPad Air 11\"", category: "Electronics", image: "📱", msrp: 699.00, dealPrice: 549.00, source: "Best Buy", fraudRisk: "low", drop: 21.5 },
-  { id: 3, name: "Dyson V15", category: "Home", image: "🧹", msrp: 749.99, dealPrice: 599.99, source: "Dyson.com", fraudRisk: "low", drop: 20.0 },
-  { id: 4, name: "Nike Air Max 270", category: "Footwear", image: "👟", msrp: 150.00, dealPrice: 89.99, source: "Unknown Seller", fraudRisk: "high", drop: 40.0 },
-  { id: 5, name: "Samsung Galaxy S25", category: "Electronics", image: "📲", msrp: 899.99, dealPrice: 749.00, source: "Samsung", fraudRisk: "low", drop: 16.8 },
-  { id: 6, name: "Instant Pot Duo", category: "Home", image: "🫕", msrp: 99.99, dealPrice: 59.99, source: "Walmart", fraudRisk: "medium", drop: 40.0 },
+  { 
+    id: 1,
+    name: "Sony WH-1000XM5",
+    category: "Electronics",
+    image: "🎧",
+    msrp: 399.99,
+    dealPrice: 289.99,
+    source: "Amazon",
+    url: "https://www.amazon.com/s?k=Sony+WH-1000XM5",
+    fraudRisk: "low",
+    drop: 27.5
+  },
+  { 
+    id: 2,
+    name: "iPad Air 11\"",
+    category: "Electronics",
+    image: "📱",
+    msrp: 699.00,
+    dealPrice: 549.00,
+    source: "Best Buy",
+    url: "https://www.bestbuy.com/site/searchpage.jsp?st=ipad+air+11",
+    fraudRisk: "low",
+    drop: 21.5
+  },
+  { 
+    id: 3,
+    name: "Dyson V15",
+    category: "Home",
+    image: "🧹",
+    msrp: 749.99,
+    dealPrice: 599.99,
+    source: "Dyson",
+    url: "https://www.dyson.com/search?q=v15",
+    fraudRisk: "low",
+    drop: 20.0
+  },
 ];
 
 const RISK = {
@@ -77,6 +107,25 @@ export default function LiveDealsView() {
 
               <div className="flex items-center justify-between pt-3 border-t border-border">
                 <p className="text-muted font-mono text-base">via <span className="text-text">{deal.source}</span></p>
+
+
+
+            <a
+  href={deal.url}
+  target="_blank"
+  rel="noopener noreferrer"
+  className={clsx(
+    "px-3 py-1.5 rounded-sm font-display font-bold text-sm tracking-widest uppercase transition-all",
+    deal.fraudRisk === "high"
+      ? "bg-danger/10 text-danger border border-danger/20 pointer-events-none"
+      : "bg-accent text-bg hover:bg-accent/90 active:scale-95"
+  )}
+>
+  {deal.fraudRisk === "high" ? "Flagged" : "View Deal →"}
+</a>
+
+
+
                 <button
                   disabled={deal.fraudRisk === "high"}
                   className={clsx(
