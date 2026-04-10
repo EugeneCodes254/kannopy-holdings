@@ -3,6 +3,9 @@ import { betterAuth } from "better-auth";
 import { username } from "better-auth/plugins";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { restrictedUsernames } from "./usernames";
+import { Resend } from "resend"
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -16,6 +19,15 @@ export const auth = betterAuth({
   })],
   emailAndPassword: {
     enabled: true,
+    async sendResetPassword({user,url}, request ){
+    await resend.emails.send({
+      from: "PriceWatch <onboarding@resend.dev>",
+      to: user.email,
+      subject: "Reset your password",
+      // Use the 'url' string directly
+      html: `<p>Click the link below to reset your password:</p>
+             <a href="${url}">${url}</a>`, 
+    });
   },
   user: {
     additionalFields: {
@@ -32,4 +44,5 @@ export const auth = betterAuth({
       },
     },
   },
+  }
 });
