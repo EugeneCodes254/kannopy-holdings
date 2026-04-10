@@ -74,7 +74,6 @@ export default function AuthModal({ onClose }: AddauthModalProps) {
       });
 
       if (res?.error) {
-        // ERROR HANDLING: If username is taken, say "cool"
         const msg = res.error.message?.toLowerCase() || "";
         if (msg.includes("username") && msg.includes("already")) {
           setError("cool");
@@ -128,7 +127,7 @@ export default function AuthModal({ onClose }: AddauthModalProps) {
             </div>
             <span className="font-display font-extrabold text-text text-base tracking-tight">PriceWatch</span>
           </div>
-          <p className="text-muted font-mono text-[10px] tracking-widest uppercase mt-1">
+          <p className="text-white font-mono text-base tracking-widest uppercase mt-1">
             {mode === "signin" ? "Sign in to your account" : mode === "signup" ? "Create your account" : "Reset your password"}
           </p>
         </div>
@@ -139,7 +138,7 @@ export default function AuthModal({ onClose }: AddauthModalProps) {
             <button
               key={m}
               onClick={() => { setMode(m); setError(""); setSuccess(""); }}
-              className={`flex-1 py-3 font-display font-bold text-xs tracking-widest uppercase transition-all ${
+              className={`flex-1 py-3 font-display font-bold text-sm tracking-widest uppercase transition-all ${
                 mode === m ? "text-accent border-b-2 border-accent bg-accent/5" : "text-muted hover:text-text border-b-2 border-transparent"
               }`}
             >
@@ -151,26 +150,26 @@ export default function AuthModal({ onClose }: AddauthModalProps) {
         {/* Form Content */}
         <div className="px-6 py-5 space-y-4">
           {mode === "forgot" ? (
-            /* FORGOT PASSWORD VIEW */
             <div className="space-y-4 animate-fadeIn">
               <Field label="Email" type="email" placeholder="you@example.com" value={form.email} onChange={set("email")} />
-              <button onClick={() => setMode("signin")} className="text-[9px] font-mono text-muted uppercase tracking-tighter hover:text-accent">
+              {/* was text-[9px] → text-sm */}
+              <button onClick={() => setMode("signin")} className="text-sm font-mono text-muted uppercase tracking-tighter hover:text-accent">
                 ← Back to Login
               </button>
             </div>
           ) : (
-            /* SIGN IN / SIGN UP VIEW */
             <>
               {mode === "signup" && (
                 <Field label="Username" placeholder="4–10 characters" value={form.username} onChange={set("username")} hint="Only lowercase letters allowed" />
               )}
-              
+
               <Field label="Email" type="email" placeholder="you@example.com" value={form.email} onChange={set("email")} />
-              
+
               <div className="space-y-1">
                 <Field label="Password" type="password" placeholder="••••••••" value={form.password} onChange={set("password")} />
                 {mode === "signin" && (
-                  <button onClick={() => setMode("forgot")} className="text-[9px] font-mono text-accent uppercase tracking-tighter hover:underline">
+                  /* was text-[9px] → text-sm */
+                  <button onClick={() => setMode("forgot")} className="text-sm font-mono text-accent uppercase tracking-tighter hover:underline">
                     Forgot Password?
                   </button>
                 )}
@@ -178,14 +177,15 @@ export default function AuthModal({ onClose }: AddauthModalProps) {
 
               {mode === "signup" && (
                 <div>
-                  <label className="text-muted font-mono text-[10px] uppercase tracking-widest block mb-1.5">Gender</label>
+                  {/* was text-[10px] → text-sm */}
+                  <label className="text-muted font-mono text-sm uppercase tracking-widest block mb-1.5">Gender</label>
                   <div className="grid grid-cols-2 gap-2">
                     {[{ label: "Male", value: "true" }, { label: "Female", value: "false" }].map((g) => (
                       <button
                         key={g.value}
                         type="button"
                         onClick={() => setForm((f) => ({ ...f, gender: g.value }))}
-                        className={`py-2.5 rounded-sm border font-display font-semibold text-xs tracking-widest uppercase transition-all ${
+                        className={`py-2.5 rounded-sm border font-display font-semibold text-sm tracking-widest uppercase transition-all ${
                           form.gender === g.value ? "border-accent bg-accent/10 text-accent" : "border-border bg-bg text-muted hover:text-text"
                         }`}
                       >
@@ -198,31 +198,34 @@ export default function AuthModal({ onClose }: AddauthModalProps) {
             </>
           )}
 
-          {/* Feedback (Error/Success) */}
+          {/* Feedback */}
           {error && (
             <div className="flex items-start gap-2 px-3 py-2.5 bg-danger/10 border border-danger/30 rounded-sm">
-              <span className="text-danger text-xs mt-0.5">✕</span>
-              <p className="text-danger font-mono text-[10px] leading-relaxed uppercase">{error}</p>
+              {/* was text-xs → text-sm */}
+              <span className="text-danger text-sm mt-0.5">✕</span>
+              {/* was text-[10px] → text-sm */}
+              <p className="text-danger font-mono text-sm leading-relaxed uppercase">{error}</p>
             </div>
           )}
           {success && (
             <div className="flex items-start gap-2 px-3 py-2.5 bg-accent/10 border border-accent/30 rounded-sm">
-              <span className="text-accent text-xs mt-0.5">✓</span>
-              <p className="text-accent font-mono text-[10px] leading-relaxed uppercase">{success}</p>
+              <span className="text-accent text-sm mt-0.5">✓</span>
+              <p className="text-accent font-mono text-sm leading-relaxed uppercase">{success}</p>
             </div>
           )}
 
-          {/* Action Button */}
+          {/* was text-xs → text-sm */}
           <button
             onClick={mode === "signin" ? handleSignIn : mode === "signup" ? handleSignUp : handleForgetPassword}
             disabled={loading}
-            className="w-full py-3 bg-accent text-bg font-display font-bold text-xs tracking-widest uppercase rounded-sm hover:bg-accent/90 active:scale-95 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full py-3 bg-accent text-bg font-display font-bold text-sm tracking-widest uppercase rounded-sm hover:bg-accent/90 active:scale-95 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading ? <span className="w-3.5 h-3.5 border-2 border-bg/30 border-t-bg rounded-full animate-spin" /> : null}
             {mode === "signin" ? "Sign In →" : mode === "signup" ? "Create Account →" : "Send Reset Link →"}
           </button>
 
-          <p className="text-center text-muted font-mono text-[9px] tracking-widest leading-relaxed">
+          {/* was text-[9px] → text-sm */}
+          <p className="text-center text-muted font-mono text-sm tracking-widest leading-relaxed">
             {mode === "signin" ? "Don't have an account? Switch to Sign Up." : mode === "signup" ? "Already have an account? Switch to Sign In." : "Suddenly remembered? Back to Sign In."}
           </p>
         </div>
@@ -234,7 +237,8 @@ export default function AuthModal({ onClose }: AddauthModalProps) {
 function Field({ label, type = "text", placeholder, value, onChange, hint }: FieldProps) {
   return (
     <div>
-      <label className="text-muted font-mono text-[10px] uppercase tracking-widest block mb-1.5">{label}</label>
+      {/* was text-[10px] → text-sm */}
+      <label className="text-muted font-mono text-sm uppercase tracking-widest block mb-1.5">{label}</label>
       <input
         type={type}
         placeholder={placeholder}
@@ -242,7 +246,8 @@ function Field({ label, type = "text", placeholder, value, onChange, hint }: Fie
         onChange={onChange}
         className="w-full bg-bg border border-border rounded-sm px-3 py-2.5 text-text font-mono text-sm placeholder-muted focus:outline-none focus:border-accent/60 transition-colors"
       />
-      {hint && <p className="text-muted font-mono text-[9px] mt-1 tracking-wide">{hint}</p>}
+      {/* was text-[9px] → text-sm */}
+      {hint && <p className="text-muted font-mono text-sm mt-1 tracking-wide">{hint}</p>}
     </div>
   );
-  }
+}
