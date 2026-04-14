@@ -17,6 +17,11 @@ jobs:
 
     env:
       CI: true
+      # Shared variables for the entire job
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      NEXT_PUBLIC_BASE_URL: http://localhost:3000
 
     steps:
       - name: Checkout
@@ -31,15 +36,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 🔥 THIS is what Playwright template is missing
       - name: Build app
+        # Next.js needs these vars now to compile routes and bake in NEXT_PUBLIC constants
         run: npm run build
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      # 🚀 Let Playwright handle server lifecycle
       - name: Run Playwright tests
+        # Better Auth and Resend need these vars to function while Playwright runs the dev/prod server
         run: npx playwright test
 
       - name: Upload report

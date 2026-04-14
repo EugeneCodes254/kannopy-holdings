@@ -5,7 +5,14 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { restrictedUsernames } from "./usernames";
 import { Resend } from "resend"
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resendApiKey = process.env.RESEND_API_KEY;
+
+if (!resendApiKey && process.env.NODE_ENV !== 'development') {
+  // This prevents the build from crashing if the key is missing
+  console.warn("Warning: RESEND_API_KEY is not defined.");
+}
+
+const resend = new Resend( resendApiKey );
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -19,7 +26,7 @@ export const auth = betterAuth({
   })],
   emailAndPassword: {
     enabled: true,
-    async sendResetPassword({user,url}, request ){
+    async sendResetPassword({user,url}){
     await resend.emails.send({
       from: "PriceWatch <onboarding@resend.dev>",
       to: user.email,
