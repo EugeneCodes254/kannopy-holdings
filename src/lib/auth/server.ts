@@ -5,14 +5,20 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { restrictedUsernames } from "./usernames";
 import { Resend } from "resend"
 
+
 const resendApiKey = process.env.RESEND_API_KEY;
 
-if (!resendApiKey && process.env.NODE_ENV !== 'development') {
-  // This prevents the build from crashing if the key is missing
-  console.warn("Warning: RESEND_API_KEY is not defined.");
+// 2. Warn if it's missing (helps for debugging)
+if (!resendApiKey && process.env.NODE_ENV === 'production') {
+  console.warn("⚠️ Warning: RESEND_API_KEY is not defined.");
 }
 
-const resend = new Resend( resendApiKey );
+// 3. FIX: Provide a fallback string. 
+// The constructor just needs A string to not throw an error. 
+// At runtime, it will use the real key from your GitHub Secrets.
+const resend = new Resend(resendApiKey || "re_dummy_key_for_build");
+
+
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
